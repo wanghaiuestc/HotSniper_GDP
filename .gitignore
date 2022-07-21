@@ -1,2 +1,5 @@
 # ignore the pin_kit folder
 pin_kit/
+
+# ignore the hotspot folder
+hotspot/
