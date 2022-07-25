@@ -15,6 +15,9 @@
 #include "policies/dvfsMaxFreq.h"
 #include "policies/dvfsFixedPower.h"
 #include "policies/dvfsTSP.h"
+/* add for gdp begin */
+#include "policies/dvfsGDP.h"
+/* add for gdp end */
 #include "policies/dvfsTestStaticPower.h"
 #include "policies/mapFirstUnused.h"
 
@@ -309,7 +312,13 @@ void SchedulerOpen::initDVFSPolicy(String policyName) {
 		dvfsPolicy = new DVFSFixedPower(performanceCounters, coreRows, coreColumns, minFrequency, maxFrequency, frequencyStepSize, perCorePowerBudget);
 	} else if (policyName == "tsp") {
 		dvfsPolicy = new DVFSTSP(thermalModel, performanceCounters, coreRows, coreColumns, minFrequency, maxFrequency, frequencyStepSize);
-	} //else if (policyName ="XYZ") {... } //Place to instantiate a new DVFS logic. Implementation is put in "policies" package.
+	}
+	/* add for gdp begin */
+	else if (policyName == "gdp")
+	  {
+	    dvfsPolicy = new DVFSGDP(thermalModel, performanceCounters, coreRows, coreColumns, minFrequency, maxFrequency, frequencyStepSize);
+	  } //Place to instantiate a new DVFS logic. Implementation is put in "policies" package.
+	/* add for gdp end */
 	else {
 		cout << "\n[Scheduler] [Error]: Unknown DVFS Algorithm" << endl;
  		exit (1);
