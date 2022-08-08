@@ -1274,6 +1274,10 @@ void SchedulerOpen::executeMigrationPolicy(SubsecondTime time) {
 }
 
 
+/* add for gdp begin */
+
+/* add for gdp end */
+
 /** periodic
     This function is called periodically by Sniper at Interval of 100ns.
 */
@@ -1319,7 +1323,16 @@ void SchedulerOpen::periodic(SubsecondTime time) {
 
 		fetchTasksIntoQueue (time);
 				
-
+		/* add for GDP begin */
+		if (typeid(*dvfsPolicy).name() == typeid(DVFSGDP).name())
+		  {
+		    printf("** DVFS policy is GDP");
+		  }
+		else
+		  {
+		    printf("** DVFS policy is NOT GDP");
+		  }
+		/* add for GDP end */
 
 		while (	numberOfTasksInQueue () != 0) {	
 			if (!schedule (taskFrontOfQueue (), false,time)) break; //Scheduler can't map the task in front of queue.
