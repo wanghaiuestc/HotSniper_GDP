@@ -290,6 +290,21 @@ void SchedulerOpen::initMappingPolicy(String policyName) {
 		}
 		mappingPolicy = new MapFirstUnused(coreRows, coreColumns, preferredCoresOrder);
 	} //else if (policyName ="XYZ") {... } //Place to instantiate a new mapping logic. Implementation is put in "policies" package.
+	/* add for gdp begin */
+	else if (policyName == "gdp")
+	  {
+	    vector<int> preferredCoresOrder;
+	    for (core_id_t core_id = 0; core_id < (core_id_t)Sim()->getConfig()->getApplicationCores(); core_id++)
+	      {
+		int p = Sim()->getCfg()->getIntArray("scheduler/open/preferred_core", core_id);
+		if (p != -1)
+		  preferredCoresOrder.push_back(p);
+		else
+		  break;
+	      }
+	    mappingPolicy = new MapGDP(coreRows, coreColumns, preferredCoresOrder);
+	  }
+	/* add for gdp end */
 	else {
 		cout << "\n[Scheduler] [Error]: Unknown Mapping Algorithm" << endl;
  		exit (1);
@@ -1326,11 +1341,11 @@ void SchedulerOpen::periodic(SubsecondTime time) {
 		/* add for GDP begin */
 		if (typeid(*dvfsPolicy).name() == typeid(DVFSGDP).name())
 		  {
-		    printf("** DVFS policy is GDP");
+		    printf("** DVFS policy is GDP\n");
 		  }
 		else
 		  {
-		    printf("** DVFS policy is NOT GDP");
+		    printf("** DVFS policy is NOT GDP\n");
 		  }
 		/* add for GDP end */
 
