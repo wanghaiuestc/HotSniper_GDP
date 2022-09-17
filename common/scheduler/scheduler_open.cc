@@ -17,6 +17,7 @@
 #include "policies/dvfsTSP.h"
 /* add for gdp begin */
 #include "policies/dvfsGDP.h"
+#include "policies/mapGDP.h"
 /* add for gdp end */
 #include "policies/dvfsTestStaticPower.h"
 #include "policies/mapFirstUnused.h"
@@ -1324,6 +1325,26 @@ void SchedulerOpen::periodic(SubsecondTime time) {
 	if ((dvfsPolicy != NULL) && (time.getNS() % dvfsEpoch == 0)) {
 		cout << "\n[Scheduler]: DVFS Control Loop invoked at " << formatTime(time) << endl;
 
+		/* add for GDP begin */
+		// find the active core mapping, store in threadMapping, and write into file
+		// note that only the cores assigned to threads are active, the cores only assigned to task but not to thread are not active
+		if (typeid(*dvfsPolicy).name() == typeid(DVFSGDP).name())
+		  {
+		    std::vector<bool> threadMapping(numberOfCores,false);
+		    for(int coreCounter=0;coreCounter<numberOfCores;coreCounter++)
+		      {
+			if(isAssignedToThread(coreCounter))
+			    threadMapping.at(coreCounter) = true;
+		      }
+		    //write current threadMapping into file
+		    std::string threadMappingFile = "./system_sim_state/mapping.txt";
+		    ofstream mapping_file(threadMappingFile);
+		    for (int i=0; i<threadMapping.size(); i++)
+		      mapping_file<<threadMapping.at(i)<<"\t";
+		    mapping_file.close();
+		  }
+		/* add for GDP end */
+
 		executeDVFSPolicy();
 
 		std::vector<int> frequencies;
@@ -1337,17 +1358,6 @@ void SchedulerOpen::periodic(SubsecondTime time) {
 		cout << "\n[Scheduler]: Scheduler Invoked at " << formatTime(time) << "\n" << endl;
 
 		fetchTasksIntoQueue (time);
-				
-		/* add for GDP begin */
-		if (typeid(*dvfsPolicy).name() == typeid(DVFSGDP).name())
-		  {
-		    printf("** DVFS policy is GDP\n");
-		  }
-		else
-		  {
-		    printf("** DVFS policy is NOT GDP\n");
-		  }
-		/* add for GDP end */
 
 		while (	numberOfTasksInQueue () != 0) {	
 			if (!schedule (taskFrontOfQueue (), false,time)) break; //Scheduler can't map the task in front of queue.
