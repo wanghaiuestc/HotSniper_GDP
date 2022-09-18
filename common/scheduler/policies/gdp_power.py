@@ -50,13 +50,16 @@ def gdp_power(core_num):
     print('T_th: ', T_th)
     # solve power budget P
     if Ai.shape[0] == 1:
-        P = T_th/(Ai[0][0])
+        P = T_th[0]/Ai
     else:
         P = np.linalg.solve(Ai, T_th)
     print('Power budget P: ', P)
 
     # Write power budget P into file
-    
+    file_power = open('./system_sim_state/gdp_power.txt', 'w')
+    for power in P:
+        file_power.write(str(np.asscalar(power))+' ')
+    file_power.close()
     
 if len(sys.argv) != 2:
     raise Exception('Please provide core number when calling gdp_power.py')

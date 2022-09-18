@@ -1336,9 +1336,8 @@ void SchedulerOpen::periodic(SubsecondTime time) {
 			if(isAssignedToThread(coreCounter))
 			    threadMapping.at(coreCounter) = true;
 		      }
-		    //write current threadMapping into file
-		    std::string threadMappingFile = "./system_sim_state/mapping.txt";
-		    ofstream mapping_file(threadMappingFile);
+		    // write current threadMapping into file
+		    ofstream mapping_file("./system_sim_state/mapping.txt");
 		    for (int i=0; i<threadMapping.size(); i++)
 		      mapping_file<<threadMapping.at(i)<<"\t";
 		    mapping_file.close();

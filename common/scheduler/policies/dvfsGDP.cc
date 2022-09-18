@@ -19,23 +19,20 @@ std::vector<int> DVFSGDP::getFrequencies(const std::vector<int> &oldFrequencies,
 	
 	unsigned int n_core = coreColumns * coreRows;
 	std::vector<float> gdp(n_core, 0); // vector used to store the gdp power budget for each core
-	// char gdp_budget_filename = "gdp_budget.py";
-	// FILE* gdp_budget_file;
 	
-	// CPyInstance pyInstance;
-	// gdp_budget_file = Py_fopen(gdp_budget_filename, "r");
-	// PyRun_SimpleString("print('Hello World from Python')");
+	// run gdp_power.py in python to compute the power budgets of the active cores, the results are stored in benchmarks/system_sim_state/gdp_power.txt
 	string filename = "../common/scheduler/policies/gdp_power.py "+to_string(n_core);
 	string command = "python3 "+filename;
-	// cout<<"***The current directory is: ";
-	// string command = "pwd";
 	system(command.c_str());
 	
-
+	// load the power budget from file
+	ifstream file_power("./system_sim_state/gdp_power.txt");
 	for (unsigned int coreCounter = 0; coreCounter < n_core; coreCounter++)
 	  {
-	    gdp.at(coreCounter) = 10.0;
+	    if (activeCores.at(coreCounter))
+	      file_power >> gdp.at(coreCounter);
 	  }
+	file_power.close();
 	
 	/* GDP core code end */
 	
