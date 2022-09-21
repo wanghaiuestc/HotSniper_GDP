@@ -38,7 +38,7 @@ def gdp_power(core_num):
             print('inactive_power: ', inactive_power)
     file_config.close()
         
-    # load the multi-core system's G C B thermal model matrices
+    # load the multi-core system's thermal model matrices
     if core_num == '64':
         print('**load the 8x8 system matrices')
         if gdp_mode == 'steady':

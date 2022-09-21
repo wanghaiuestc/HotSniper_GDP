@@ -1,9 +1,7 @@
-#include <Python.h>
 #include "dvfsGDP.h"
 #include "powermodel.h"
 #include <iomanip>
 #include <iostream>
-// #include <pyhelper.hpp>
 
 using namespace std;
 

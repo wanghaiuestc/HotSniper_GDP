@@ -3,6 +3,9 @@
 #include <iostream>
 #include <map>
 #include <set>
+#include <fstream>
+
+using namespace std;
 
 // Just do initiation. Note that unlike the firstunused method, preferredCoresOrder do not contain the cores not specified by user, because their order should be computed at runtime by MapGDP::map
 MapGDP::MapGDP(unsigned int coreRows, unsigned int coreColumns, std::vector<int> preferredCoresOrder)
@@ -16,17 +19,39 @@ MapGDP::MapGDP(unsigned int coreRows, unsigned int coreColumns, std::vector<int>
 
 std::vector<int> MapGDP::map(String taskName, int taskCoreRequirement, const std::vector<bool> &availableCores, const std::vector<bool> &activeCores) {
 	std::vector<int> cores;
-	std::cout << "taskCoreRequirement: " << taskCoreRequirement << std::endl;
-	std::cout << "availableCores: ";
+	
+	// std::cout << "taskCoreRequirement: " << taskCoreRequirement << std::endl;
+	// std::cout << "availableCores: ";
+	// for (int i=0; i<availableCores.size();i++){
+	//   std::cout << availableCores[i];
+	// }
+	// std::cout << std::endl;
+	// std::cout << "activeCores: ";
+	// for (int i=0; i<activeCores.size();i++){
+	//   std::cout << activeCores[i];
+	// }
+	// std::cout << std::endl;
+
+	/* GDP mapping core code begin */
+
+	ofstream mapping_info_file("./system_sim_state/info_for_mapping.txt");
 	for (int i=0; i<availableCores.size();i++){
-	  std::cout << availableCores[i];
+	  mapping_info_file << availableCores[i] << "\t";
 	}
-	std::cout << std::endl;
-	std::cout << "activeCores: ";
+	mapping_info_file << endl;
 	for (int i=0; i<activeCores.size();i++){
-	  std::cout << activeCores[i];
+	  mapping_info_file << activeCores[i] << "\t";
 	}
-	std::cout << std::endl;
+	mapping_info_file << endl;
+
+	// unsigned int n_core = availableCores.size();
+	
+	string filename = "../common/scheduler/policies/gdp_mapping.py "+to_string(taskCoreRequirement);
+	string command = "python3 "+filename;
+	system(command.c_str());
+
+	/* GDP mapping core code end */
+	
 	// try to fill with preferred cores
 	for (const int &c : preferredCoresOrder) {
 		if (availableCores.at(c)) {
