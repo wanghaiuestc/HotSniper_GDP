@@ -1,7 +1,6 @@
 import sys
 import scipy.io as spio
 import numpy as np
-import scipy.sparse.linalg
 import re
 
 def gdp_power(core_num):
