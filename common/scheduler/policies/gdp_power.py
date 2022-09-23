@@ -70,7 +70,7 @@ def gdp_power(core_num):
     T_s = A@P_s # static power's impact on temperature, should be substracted from T_th later
 
     # formulate the Ai matrix (a submatrix of A according to the active core mapping)
-    Ai = A[core_map][:,core_map]
+    Ai = np.atleast_2d(A[core_map][:,core_map])
     print('Ai shape: ', Ai.shape)
     if gdp_mode == 'steady': # for steady state GDP
         T_th = np.full((Ai.shape[0],), temp_max - temp_amb) - T_s[core_map] # threshold temperature vector
@@ -79,11 +79,8 @@ def gdp_power(core_num):
         T_th = np.full((Ai.shape[0],), temp_max) - T_c[core_map] + Ai@P_k[core_map] - T_s[core_map]
         print('T_th: ', T_th)
         
-    # # Compute power budget with current active core mapping, solve power budget P
-    if Ai.shape[0] == 1:
-        P = T_th[0]/Ai + inactive_power
-    else:
-        P = np.linalg.solve(Ai, T_th) + P_s[core_map]
+    # Compute power budget with current active core mapping, solve power budget P
+    P = np.linalg.solve(Ai, T_th) + P_s[core_map]
     print('Power budget P: ', P)
 
     # Write power budget P into file

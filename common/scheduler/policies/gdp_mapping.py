@@ -97,7 +97,6 @@ def gdp_mapping(taskCoreRequirement):
             activeCores[idx_available_cores[idx]] = True
             Aa = np.atleast_2d(A[availableCores][:,availableCores])
             idx_available_cores = np.flatnonzero(availableCores)
-            print('idx_available_cores: ', idx_available_cores)
             
             # update T_rm
             Ai = np.atleast_2d(A[activeCores][:,activeCores])

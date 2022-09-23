@@ -49,7 +49,6 @@ std::vector<int> MapGDP::map(String taskName, int taskCoreRequirement, const std
 	  {
 	    file_gdp_map >> core_to_activate;
 	    cores.push_back(core_to_activate);
-	    cout<<"core_to_activate: "<< core_to_activate << endl;
 	  }
 	file_gdp_map.close();
 	return cores;
