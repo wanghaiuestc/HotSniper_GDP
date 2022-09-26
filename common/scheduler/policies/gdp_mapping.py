@@ -44,13 +44,14 @@ def gdp_mapping(taskCoreRequirement):
     
     # load the multi-core system's thermal model matrices
     core_num = availableCores.shape[0]
-    if core_num == 64:
+    if core_num == 100:
+        print('**load the 10x10 system matrices')
+        A = spio.loadmat('./gdp_thermal_matrices/10x10_A.mat')['A']
+    elif core_num == 64:
         print('**load the 8x8 system matrices')
         A = spio.loadmat('./gdp_thermal_matrices/8x8_A.mat')['A']
-        n_row = 8
-        n_col = 8
     else:
-        raise Exception('There is no thermal matrices available for this core number yet. Please check the core number. Or generate the corresponding thermal matrices and put them in benchmarks/gdp_thermal_matrices')
+        raise Exception('There is no thermal matrices available for this core number yet. Please check the core number. Or generate the corresponding thermal matrices and put them in benchmarks/gdp_thermal_matrices, then modify gdp_mapping.py and gdp_power.py to load these matrices.')
 
     # find the user specified preferred cores that are still in available cores, they should be activated first without GDP computing
     inact_pref_cores = np.zeros(core_num) - 1 # initiate all elements to -1
