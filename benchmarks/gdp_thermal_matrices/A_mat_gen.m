@@ -7,7 +7,7 @@
 
 % G, C, B matrices need to extracted from HotSpot with a floorplan first.
 
-name_of_chip = '8x8';
+name_of_chip = '8x8_manycore';
 % set the power budgeting time step, works for transient GDP (A_bar)
 t_budget = 0.001; 
 

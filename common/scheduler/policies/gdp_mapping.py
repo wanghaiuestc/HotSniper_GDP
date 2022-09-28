@@ -27,6 +27,11 @@ def gdp_mapping(taskCoreRequirement):
             line_words = list(filter(None, line_words))
             inactive_power = float(line_words[1])
             print('inactive_power: ', inactive_power)
+        if line.startswith('floorplan'):
+            line_words = re.split('=|#|\s', line)
+            line_words = list(filter(None, line_words))
+            name_of_chip = re.split('/|\.', line_words[1])[-2]
+            print('name_of_chip: ', name_of_chip)
     file_config.close()
 
     # load the mapping information from file info_for_mapping.txt, saved in mapGDP::map in mapGDP.cc
@@ -43,15 +48,9 @@ def gdp_mapping(taskCoreRequirement):
         raise Exception('There are not enough available cores to meet the required core number of this task.')
     
     # load the multi-core system's thermal model matrices
+    print('** load the ', name_of_chip, 'system matrices')
     core_num = availableCores.shape[0]
-    if core_num == 100:
-        print('**load the 10x10 system matrices')
-        A = spio.loadmat('./gdp_thermal_matrices/10x10_A.mat')['A']
-    elif core_num == 64:
-        print('**load the 8x8 system matrices')
-        A = spio.loadmat('./gdp_thermal_matrices/8x8_A.mat')['A']
-    else:
-        raise Exception('There is no thermal matrices available for this core number yet. Please check the core number. Or generate the corresponding thermal matrices and put them in benchmarks/gdp_thermal_matrices, then modify gdp_mapping.py and gdp_power.py to load these matrices.')
+    A = spio.loadmat('./gdp_thermal_matrices/'+name_of_chip+'_A.mat')['A']
 
     # find the user specified preferred cores that are still in available cores, they should be activated first without GDP computing
     inact_pref_cores = np.zeros(core_num) - 1 # initiate all elements to -1
