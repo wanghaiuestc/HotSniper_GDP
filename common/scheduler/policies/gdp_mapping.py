@@ -85,7 +85,7 @@ def gdp_mapping(taskCoreRequirement):
         Aa = np.atleast_2d(A[availableCores][:,availableCores])
         idx_available_cores = np.flatnonzero(availableCores)
         print('idx_available_cores: ', idx_available_cores)
-        for i in range(n_ipc, taskCoreRequirement-n_ipc):
+        for i in range(n_ipc, taskCoreRequirement):
             # find the core in available cores (candidates) which leads to the largest power budget (indicated by the largest inner product with T_rm)
             idx = 0
             for j in range(1,idx_available_cores.shape[0]): 
