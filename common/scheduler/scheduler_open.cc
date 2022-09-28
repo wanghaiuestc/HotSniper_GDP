@@ -1290,10 +1290,6 @@ void SchedulerOpen::executeMigrationPolicy(SubsecondTime time) {
 }
 
 
-/* add for gdp begin */
-
-/* add for gdp end */
-
 /** periodic
     This function is called periodically by Sniper at Interval of 100ns.
 */
