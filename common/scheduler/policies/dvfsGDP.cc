@@ -18,8 +18,8 @@ std::vector<int> DVFSGDP::getFrequencies(const std::vector<int> &oldFrequencies,
 	unsigned int n_core = coreColumns * coreRows;
 	std::vector<float> gdp(n_core, 0); // vector used to store the gdp power budget for each core
 	
-	// run gdp_power.py in python to compute the power budgets of the active cores, the results are stored in benchmarks/system_sim_state/gdp_power.txt
-	string filename = "../common/scheduler/policies/gdp_power.py "+to_string(n_core);
+	// run execute_gdp_power.py in python to compute the power budgets of the active cores, the results are stored in benchmarks/system_sim_state/gdp_power.txt
+	string filename = "../common/scheduler/policies/execute_gdp_power.py "+to_string(n_core);
 	string command = "python3 "+filename;
 	system(command.c_str());
 	

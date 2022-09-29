@@ -1,4 +1,1 @@
-- put gdp core code into a function
-- skip unnecessary computations:
-  * in steady gdp, perform computing only when the core-thread relation (affinity) changes
-  * compute static power in mapping and store in file?
+

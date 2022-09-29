@@ -37,8 +37,8 @@ std::vector<int> MapGDP::map(String taskName, int taskCoreRequirement, const std
 	}
 	mapping_info_file << endl;
 
-	// execute gdp_mapping.py to compute the active core mapping, the outputs are written in file gdp_map.txt
-	string filename = "../common/scheduler/policies/gdp_mapping.py "+to_string(taskCoreRequirement);
+	// execute execute_gdp_mapping.py to compute the active core mapping, the outputs are written in file gdp_map.txt
+	string filename = "../common/scheduler/policies/execute_gdp_mapping.py "+to_string(taskCoreRequirement);
 	string command = "python3 "+filename;
 	system(command.c_str());
 

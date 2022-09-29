@@ -2,8 +2,9 @@ import sys
 import scipy.io as spio
 import numpy as np
 import re
+import gdp
 
-def gdp_power(core_num):
+def execute_gdp_power(core_num):
     
     print('**gdp_power.py python function call begin')
 
@@ -67,22 +68,12 @@ def gdp_power(core_num):
     print('Current temperature of cores: ', T_c)
     print('Previous power of cores: ', P_k)
 
-    # Compute the static power's impact on temperature. If the static power is assumed to be constant (as in this experiment), this impact is constant and actually can be pre-computed only once outside
-    P_s = np.full((A.shape[0],), inactive_power) # static power vector
-    T_s = A@P_s # static power's impact on temperature, should be substracted from T_th later
-
-    # formulate the Ai matrix (a submatrix of A according to the active core mapping)
-    Ai = np.atleast_2d(A[core_map][:,core_map])
-    print('Ai shape: ', Ai.shape)
-    if gdp_mode == 'steady': # for steady state GDP
-        T_th = np.full((Ai.shape[0],), temp_max - temp_amb) - T_s[core_map] # threshold temperature vector
-        print('T_th: ', T_th)
-    else: # for transient GDP
-        T_th = np.full((Ai.shape[0],), temp_max) - T_c[core_map] + Ai@P_k[core_map] - T_s[core_map]
-        print('T_th: ', T_th)
-        
-    # Compute power budget with current active core mapping, solve power budget P
-    P = np.linalg.solve(Ai, T_th) + P_s[core_map]
+    # formulate the static power vector: in hotsniper, every core (active or not) has the same static power
+    P_s = np.full((A.shape[0],), inactive_power)
+    
+    # Compute power budget using gdp power budgeting core function
+    P = gdp.gdp_power(A, core_map, temp_max, temp_amb, P_s, P_k, T_c, gdp_mode)
+    
     print('Power budget P: ', P)
 
     # Write power budget P into file
@@ -90,11 +81,11 @@ def gdp_power(core_num):
     for power in P:
         file_power.write(str(np.asscalar(power))+' ')
     file_power.close()
-    
+
 if len(sys.argv) != 2:
     raise Exception('Please provide core number when calling gdp_power.py')
 
-gdp_power(sys.argv[1])
+execute_gdp_power(sys.argv[1])
 
 
 
