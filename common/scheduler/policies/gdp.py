@@ -1,7 +1,7 @@
 import numpy as np
 
 def gdp_map(A, temp_max, temp_amb, taskCoreRequirement, activeCores, availableCores, preferredCoresOrder, P_s):
-    # The function to find the GDP optimalized active core map
+    # The function to find the GDP optimized active core map
     # Inputs:
     # A: system matrix, usually A = B^T G^{-1} B according to the GDP paper
     # temp_max: temperature threshold scalar
