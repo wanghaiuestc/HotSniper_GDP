@@ -42,12 +42,12 @@ std::vector<int> DVFSGDP::getFrequencies(const std::vector<int> &oldFrequencies,
 			int frequency = oldFrequencies.at(coreCounter);
 			float utilization = performanceCounters->getUtilizationOfCore(coreCounter);
 
-			cout << "[Scheduler][DVFSGDP]: Core " << setw(2) << coreCounter << ":";
+			cout << "[Scheduler] [GDP]: Core " << setw(2) << coreCounter << ":";
 			cout << " P=" << fixed << setprecision(3) << power << " W";
+			cout << " (GDP budget: " << fixed << setprecision(3) << gdp.at(coreCounter) << " W)";
 			cout << " f=" << frequency << " MHz";
 			cout << " T=" << fixed << setprecision(1) << temperature << " °C";
 			cout << " utilization=" << fixed << setprecision(3) << utilization << endl;
-			cout<<"GDP_power_budget = "<<gdp.at(coreCounter)<<endl;
 
 			int expectedGoodFrequency = PowerModel::getExpectedGoodFrequency(frequency, power, gdp.at(coreCounter), minFrequency, maxFrequency, frequencyStepSize);
 			frequencies.at(coreCounter) = expectedGoodFrequency;

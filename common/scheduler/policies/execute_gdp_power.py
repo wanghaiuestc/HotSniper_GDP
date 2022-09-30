@@ -6,7 +6,7 @@ import gdp
 
 def execute_gdp_power(core_num):
     
-    print('**gdp_power.py python function call begin')
+    print('[Scheduler] [GDP]: Starting the GDP power budgeting process by executing execute_gdp_power.py')
 
     core_num = int(core_num)
     
@@ -17,36 +17,29 @@ def execute_gdp_power(core_num):
             line_words = re.split('=|#|\s', line) # split the line into words with splitor '=', '#', and whitespaces
             line_words = list(filter(None, line_words)) # filt out the whitespaces
             temp_max = float(line_words[1])
-            print('max_temperature: ', temp_max)
         if line.startswith('ambient_temperature'):
             line_words = re.split('=|#|\s', line)
             line_words = list(filter(None, line_words))
             temp_amb = float(line_words[1])
-            print('ambient_temperature: ', temp_amb)
         if line.startswith('gdp_mode'):
             line_words = re.split('=|#|\s', line)
             line_words = list(filter(None, line_words))
             gdp_mode = line_words[1]
-            print('gdp_mode: ', gdp_mode)
         if line.startswith('dvfs_epoch'):
             line_words = re.split('=|#|\s', line)
             line_words = list(filter(None, line_words))
             dvfs_epoch = int(line_words[1])
-            print('dvfs_epoch: ', dvfs_epoch)
         if line.startswith('inactive_power'):
             line_words = re.split('=|#|\s', line)
             line_words = list(filter(None, line_words))
             inactive_power = float(line_words[1])
-            print('inactive_power: ', inactive_power)
         if line.startswith('floorplan'):
             line_words = re.split('=|#|\s', line)
             line_words = list(filter(None, line_words))
             name_of_chip = re.split('/|\.', line_words[1])[-2]
-            print('name_of_chip: ', name_of_chip)
     file_config.close()
         
     # load the multi-core system's thermal model matrices
-    print('** load the ', name_of_chip, 'system matrices')
     if gdp_mode == 'steady':
         A = spio.loadmat('./gdp_thermal_matrices/'+name_of_chip+'_A.mat')['A']
     elif gdp_mode == 'transient':
@@ -60,13 +53,10 @@ def execute_gdp_power(core_num):
     # load the current active core distribution in core_map. 'mapping.txt' is writen by SchedulerOpen::periodic in scheduler_open.cc for every DVFS cycle
     core_map = np.loadtxt('./system_sim_state/mapping.txt')
     core_map = np.asarray(core_map, dtype = bool) # use bool type to extract Ai matrix from A
-    print('core_map: ', core_map)
 
     # load the current temperature/power from files, ingore the first line which contains core names
     T_c = np.loadtxt('./InstantaneousTemperature.log',skiprows=1) # current temperature
     P_k = np.loadtxt('./InstantaneousPower.log',skiprows=1) # previous power consumption
-    print('Current temperature of cores: ', T_c)
-    print('Previous power of cores: ', P_k)
 
     # formulate the static power vector: in hotsniper, every core (active or not) has the same static power
     P_s = np.full((A.shape[0],), inactive_power)
@@ -74,7 +64,7 @@ def execute_gdp_power(core_num):
     # Compute power budget using gdp power budgeting core function
     P = gdp.gdp_power(A, core_map, temp_max, temp_amb, P_s, P_k, T_c, gdp_mode)
     
-    print('Power budget P: ', P)
+    print('[Scheduler] [GDP]: Power budget determined by GDP (W): ', P)
 
     # Write power budget P into file
     file_power = open('./system_sim_state/gdp_power.txt', 'w')

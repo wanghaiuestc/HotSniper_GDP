@@ -3,7 +3,7 @@ import numpy as np
 def gdp_map(A, temp_max, temp_amb, taskCoreRequirement, activeCores, availableCores, preferredCoresOrder, P_s):
     # The function to find the GDP optimized active core map
     # Inputs:
-    # A: system matrix, usually A = B^T G^{-1} B according to the GDP paper
+    # A: system thermal model matrix, usually A = B^T G^{-1} B according to the GDP paper
     # temp_max: temperature threshold scalar
     # temp_amb: ambient temperature scalar
     # taskCoreRequirement: the number of new active cores need to be mapped
@@ -26,11 +26,9 @@ def gdp_map(A, temp_max, temp_amb, taskCoreRequirement, activeCores, availableCo
             availableCores[core_id] = False
             activeCores[core_id] = True
             n_ipc = n_ipc+1
-    print('inact_pref_cores: ', inact_pref_cores)
-    print('availableCores: ', availableCores)
 
-    # activate the inactive preferred cores first. If taskCoreRequirement <= n_ipc, then we are simply done without GDP computation. Otherwise, we need to determine the remaining active cores using GDP iterations
-    cores_to_activate = np.zeros(core_num) - 1 # initiate all elements to -1
+    # Activate the inactive preferred cores first. If taskCoreRequirement <= n_ipc, then we are simply done without GDP computation. Otherwise, we need to determine the remaining active cores using GDP iterations
+    cores_to_activate = np.zeros(taskCoreRequirement) - 1 # initiate all elements to -1
     cores_to_activate[:taskCoreRequirement] = inact_pref_cores[:taskCoreRequirement] # all the inactive preferred cores should be activated first
 
     # if taskCoreRequirement > n_ipc, we need to perform GDP to find the remaining active cores
@@ -48,7 +46,6 @@ def gdp_map(A, temp_max, temp_amb, taskCoreRequirement, activeCores, availableCo
             
         Aa = np.atleast_2d(A[availableCores][:,availableCores])
         idx_available_cores = np.flatnonzero(availableCores)
-        print('idx_available_cores: ', idx_available_cores)
         for i in range(n_ipc, taskCoreRequirement):
             # find the core in available cores (candidates) which leads to the largest power budget (indicated by the largest inner product with T_rm)
             idx = 0
@@ -84,18 +81,15 @@ def gdp_power(A, core_map, temp_max, temp_amb, P_s, P_k, T_c, gdp_mode):
     # Output:
     # P: power budget of the active cores according to core_map
 
-    # Compute the static power's impact on temperature. If the static power is assumed to be constant (as in this experiment), this impact is constant and actually can be pre-computed only once outside
+    # Compute the static power's impact on temperature. If the static power is assumed to be constant (such as in HotSniper), this impact is constant and actually can be pre-computed only once outside
     T_s = A@P_s # static power's impact on temperature, should be substracted from T_th later
     
     # formulate the Ai matrix (a submatrix of A according to the active core mapping)
     Ai = np.atleast_2d(A[core_map][:,core_map])
-    print('Ai shape: ', Ai.shape)
     if gdp_mode == 'steady': # for steady state GDP
         T_th = np.full((Ai.shape[0],), temp_max - temp_amb) - T_s[core_map] # threshold temperature vector
-        print('T_th: ', T_th)
     else: # for transient GDP
         T_th = np.full((Ai.shape[0],), temp_max) - T_c[core_map] + Ai@P_k[core_map] - T_s[core_map]
-        print('T_th: ', T_th)
         
     # Compute power budget with current active core mapping, solve power budget P
     P = np.linalg.solve(Ai, T_th) + P_s[core_map]
