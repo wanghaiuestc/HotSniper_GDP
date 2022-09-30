@@ -1,105 +1,54 @@
-### Next Release: CoMeT Simulator
+# Greedy Dynamic Power (GDP)
 
-CoMeT: CoMeT is next-generation open-source EDA toolchain for integrated core-memory interval thermal simulations of 2D, 2.5, and 3D multi-/many-core processors. CoMeT *subsumes* the code of HotSniper.
+We release the open source code for GDP written in Python 3.
 
-[Download CoMeT](https://github.com/marg-tools/CoMeT) 
+Greedy dynamic power (GDP) is a dynamic power budgeting policy which
+provides a high power budget for the multi/many-core systems. It
+contains an optimized active core mapping strategy as well as a
+transient temperature aware power budget computing methodology. 
 
-# HotSniper 7
+Here, the GDP code is integrated into the HotSniper simulator. With
+the similar strategy, one can easily integrate GDP into other performance-thermal
+simulators or his/her own simulation tool chain. 
 
-An EDA toolchain for interval thermal simulations of 2D multi-/many-cores in an open system.
-
-Note: If you have a problem, please first browse the closed issues here - https://github.com/anujpathania/HotSniper/issues. If your problem continues to remain unresolved, please feel free to contact us by raising a new issue. Also, please do not forget to close the issue once we have addressed your problem. We prefer not to resolve issues over e-mail.
+The main
+GDP code is in ```gdp.py```.
 
 ## Publication
 
-### HotSniper: Sniper-Based Toolchain for Many-Core Thermal Simulations in Open Systems
+### GDP: A Greedy Based Dynamic Power Budgeting Method for Multi/Many-Core Systems in Dark Silicon
 
-Details of HotSniper can be found in our ESL 2018 paper, and please consider citing this paper in your work if you find this tool useful in your research.
+For more details, please see our GDP paper published in TC 2019.
+Please also cite this paper if this code is useful.
 
-> Pathania, Anuj, and Jörg Henkel. **"HotSniper: Sniper-Based Toolchain for Many-Core Thermal Simulations in Open Systems."** *IEEE Embedded Systems Letters* 11.2 (2018): 54-57.
+> H. Wang, D. Tang, M. Zhang, et al., **"GDP: A Greedy Based Dynamic
+> Power Budgeting Method for Multi/Many-Core Systems in Dark
+> Silicon."** *IEEE Transactions on Computers*, vol. 68, no. 4, April
+> 2019, pp. 526-541.
 
-[IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/8444047) 
+[IEEE Xplore](https://ieeexplore.ieee.org/document/8493277) 
 
-## The HotSniper User Manual
+## Introduction of the GDP code
+The main GDP code is in ```gdp.py```. When integrated with HotSniper
+(as in this repository), ```gdp.py``` is located at
+```common/scheduler/policies/gdp.py```.
 
-Please refer to [Hot Sniper User Manual](https://github.com/anujpathania/HotSniper/blob/master/The%20HotSniper%20User%20Manual.pdf) to learn how to write custom scheduling policies that perform thermal-aware Dynamic Voltage Frequency Scaling (DVFS), Task Mapping, and Task Migration.
+It mainly contains two functions: ```gdp_map```, which finds the GDP
+optimized active core map, and ```gdp_power```, which compute the GDP
+power budget for a given active core map.
 
+To integrate GDP in your own performance-thermal simulation tool
+chain (other than HotSniper), simply write a connection python script to handle the input and
+output for GDP and add ```import gdp``` to use the GDP functions. Take
+```common/scheduler/policies/execute_gdp_mapping.py``` and
+```common/scheduler/policies/execute_gdp_power.py``` as examples which
+are such scripts for the HotSniper simulator. 
 
-## 1- Requirements
-### Docker
-HotSniper7 compiles and runs inside a Docker container. Therefore, you need to download & install Docker. 
-For more info: https://docs.docker.com/engine/install/ubuntu/
+## How to install the HotSniper integrated with GDP
 
-After installing Docker, make sure you are able to run it without needing sudo by following instructions here - https://docs.docker.com/engine/install/linux-postinstall/
-
-### PinPlay 
-Download and extract Pinplay 3.2 to the root HotSniper7 directory as ```pin_kit```
-```sh
-wget --user-agent="Mozilla"  https://www.intel.com/content/dam/develop/external/us/en/protected/pinplay-drdebug-3.2-pin-3.2-81205-gcc-linux.tar.gz
-tar xf pinplay-drdebug-3.2-pin-3.2-81205-gcc-linux.tar.gz
-mv pinplay-drdebug-3.2-pin-3.2-81205-gcc-linux pin_kit
-```
-
-## 2- Compiling HotSniper7
-At this stage, the root HotSniper7 directory has a folder named ```pin_kit``` containing the PinPlay-3.2 library and a folder named ```hotspot```containing the HotSpot simulator. Since you now have Docker installed, let's create a ```container``` using the shipped ```Dockerfile```.
-```sh
-cd docker
-make
-make run
-```
-Now that we are inside our container, we can build HotSniper 7 and its requirements:
-```sh
-cd ..
-```
-
-### HotSpot
-The [HotSpot] simulator is shipped with HotSniper7. All you need to do is to compile it:
-```sh
-cd hotspot
-make
-cd ..
-```
-
-### HotSniper 7
-```sh
-make
-```
-
-## 3- Compiling the Benchmarks
-
-Run inside container:
-```sh
-#setting $GRAPHITE_ROOT to HotSniper7's root directory
-export GRAPHITE_ROOT=$(pwd)
-cd benchmarks
-#setting $BENCHMARKS_ROOT to the benchmarks directory
-export BENCHMARKS_ROOT=$(pwd)
-#compiling the benchmarks
-make
-```
-
-
-## 4- Running the Simulations
-HotSniper7 is shipped with a ```simulationcontrol``` script that you can use to run batch simulations.
-Run inside container:
-```sh
-cd simulationcontrol
-PYTHONIOENCODING="UTF-8" python3 run.py
-```
-The path of the results' directory can be set inside the ```simulationcontrol/config.py``` file.
-
-
-## 5- Evaluate your results
-Quickly list the finished simulations:
-```sh
-cd simulationcontrol
-PYTHONIOENCODING="UTF-8" python3 parse_results.py
-```
-
-Each run is stored in a separate directory in the results directory (see 4).
-For quick visual check, many plots are automatically generated for you (IPS, power, etc).
-
-To do your own (automated) evaluations, see the `simulationcontrol.resultlib` package for a set of helper functions to parse the results. See the source code of `parse_results.py` for a few examples.
+GDP is integrated into the HotSniper simulator. The installation of
+HotSniper_GDP is 
+Please refer to [HotSniper User Manual](https://github.com/anujpathania/HotSniper/blob/master/The%20HotSniper%20User%20Manual.pdf) to learn how to write custom scheduling policies that perform thermal-aware Dynamic Voltage Frequency Scaling (DVFS), Task Mapping, and Task Migration.
 
 
 ## Configuration Checklist
