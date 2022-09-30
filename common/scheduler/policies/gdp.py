@@ -12,7 +12,7 @@ def gdp_map(A, temp_max, temp_amb, taskCoreRequirement, activeCores, availableCo
     # preferredCoresOrder: the user specified activation order vector, -1 indicates the end of the preferred cores. These cores should be activated first (if available) before GDP computation. If user do not specify any activation order, simply set all elements to -1.
     # P_s: static power vector, each element is the static power value of each core, use an all zero vector if no static power
     # Output:
-    # cores_to_activate: vector of the new active core indexes, -1 indicates the end of the new active cores
+    # cores_to_activate: vector of the new active core indexes
 
     # total core number of the multi/many core system
     core_num = availableCores.shape[0]
@@ -27,11 +27,10 @@ def gdp_map(A, temp_max, temp_amb, taskCoreRequirement, activeCores, availableCo
             activeCores[core_id] = True
             n_ipc = n_ipc+1
 
-    # Activate the inactive preferred cores first. If taskCoreRequirement <= n_ipc, then we are simply done without GDP computation. Otherwise, we need to determine the remaining active cores using GDP iterations
-    cores_to_activate = np.zeros(taskCoreRequirement) - 1 # initiate all elements to -1
-    cores_to_activate[:taskCoreRequirement] = inact_pref_cores[:taskCoreRequirement] # all the inactive preferred cores should be activated first
+    # Initiate cores_to_activate using inact_pref_cores, becuase we need to activate the inactive preferred cores first. 
+    cores_to_activate = inact_pref_cores[:taskCoreRequirement] # all the inactive preferred cores should be activated first
 
-    # if taskCoreRequirement > n_ipc, we need to perform GDP to find the remaining active cores
+    # If taskCoreRequirement <= n_ipc, then we are simply done without GDP computation. Otherwise (if taskCoreRequirement > n_ipc), we need to determine the remaining active cores using GDP iterations.
     if taskCoreRequirement > n_ipc:
         # initiate GDP iterations
         T_s = A@P_s # static power's impact on temperature, should be substracted from T_th later
