@@ -69,8 +69,8 @@ for the installation steps.
 HotSniper with GDP can be run directly with the provided two many-core
 systems: 
 
-1. 8x8\_manycore: floorplan (```benchmarks/10x10_manycore.flp```)
-2. 10x10\_manycore: floorplan (```benchmarks/10x10_eigendata.bin```)
+1. 8x8\_manycore: floorplan (```benchmarks/8x8_manycore.flp```)
+2. 10x10\_manycore: floorplan (```benchmarks/10x10_manycore.flp```)
 
 ## Code Acknowledgements
 
