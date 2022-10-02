@@ -1,3 +1,7 @@
+This is an implementation of integrating the greedy dynamic power
+(GDP) into the HotSniper simulator. The unintegrated GDP code is also available at [here](https://wanghaiuestc.github.io),
+which can be used in other simulators or in your own performance-thermal simulation flow. 
+
 # Greedy Dynamic Power (GDP)
 
 Greedy dynamic power (GDP) is a dynamic power budgeting method which
@@ -10,28 +14,26 @@ be easily integrated into a performance-thermal simulator or one's own
 simulation tool chain. 
 
 To illustrate how to integrate GDP into a performance-thermal simulator,
-we provide the HotSniper 7 simulator integrated with GDP, which is ready
+we provide this HotSniper 7 simulator integrated with GDP, which is ready
 to run as an example. 
-
-The main GDP code is in ```gdp.py```.
 
 ## Publication
 
 ### GDP: A Greedy Based Dynamic Power Budgeting Method for Multi/Many-Core Systems in Dark Silicon
 
-For more details, please see our GDP paper published in TC 2019.
-Please also cite this paper if this code is useful.
+For more details, please read our GDP paper published in TC 2019.
+Please also cite this paper if the GDP code is useful.
 
-> H. Wang, D. Tang, M. Zhang, et al., **"GDP: A Greedy Based Dynamic
+> H. Wang, D. Tang, M. Zhang, et al., **"[GDP: A Greedy Based Dynamic
 > Power Budgeting Method for Multi/Many-Core Systems in Dark
-> Silicon."** *IEEE Transactions on Computers*, vol. 68, no. 4, April
+> Silicon](https://wanghaiuestc.github.io/papers/TC_gdp_author_copy.pdf)."** *IEEE Transactions on Computers*, vol. 68, no. 4, April
 > 2019, pp. 526-541.
 
 [IEEE Xplore](https://ieeexplore.ieee.org/document/8493277) 
 
 ## Introduction of the GDP code
 The main GDP code is in ```gdp.py```. When integrated with HotSniper
-(as in this repository), ```gdp.py``` is located at ```common/scheduler/policies/gdp.py```.
+(as in this implementation), ```gdp.py``` is located at ```common/scheduler/policies/gdp.py```.
 
 It mainly contains two functions: ```gdp_map```, which finds the GDP
 optimized active core map, and ```gdp_power```, which computes the GDP
@@ -41,42 +43,53 @@ To integrate GDP in your own performance-thermal simulation tool
 chain (other than HotSniper), simply write a connection python script to handle the input and
 output for GDP and add ```import gdp``` to use the GDP functions. 
 Take ```common/scheduler/policies/execute_gdp_mapping.py``` and ```common/scheduler/policies/execute_gdp_power.py``` as examples, which
-are such scripts written for the HotSniper simulator. 
+are such scripts written specially for the HotSniper simulator. 
 
-## How to install the HotSniper integrated with GDP
+## How to install the HotSniper with GDP
 
-In this repository, GDP is integrated into the HotSniper 7 simulator as an example. The installation of
+In this repository, GDP is integrated into the HotSniper 7 simulator. The installation of
 HotSniper with GDP is exactly the same as the original HotSniper, so
 please refer to [HotSniper](https://github.com/anujpathania/HotSniper)
 (or see the local ```README_HOTSNIPER.md```)
 for the installation steps.
 
 
-## How to run HotSniper with GDP
+## How to run the HotSniper with GDP
 
 1. Install HotSniper with GDP by following the installation steps of
    the original HotSniper described in the [HotSniper User
    Manual](https://github.com/anujpathania/HotSniper#the-hotsniper-user-manual)
    (or see the local ```README_HOTSNIPER.md```).
+   
 2. Set the HotSniper related configurations by following the
-   [HotSniper Configuration Checklist](https://github.com/anujpathania/HotSniper#configuration-checklist).
+   [HotSniper Configuration
+   Checklist](https://github.com/anujpathania/HotSniper#configuration-checklist).
+   
 3. Set the GDP related configurations:
    - In ```config/base.cfg```:
 	 - Set ```scheduler/open/logic``` to ```gdp``` to use GDP as
        the active core mapping method.
 	 - Set ```scheduler/open/dvfs``` to ```gdp``` to use GDP to
        compute the power budget dynamically for each DVFS cycle. 
-	 - Set ```scheduler/open/gdp_mode``` to ```steady``` or  ```transient```
+	 - Set ```scheduler/open/gdp_mode``` to ```steady``` or ```transient```.
+	 
+	 Although we recommend setting both the active core mapping
+   method and the power budget computing method as GDP, one can
+   actually set them independently. For example, one is free to use ```first_unused``` as the active
+   core mapping method, and use GDP only for the power budget
+   computing.
+   
 4. If you want to change the multi-core system to be simulated, set
    the floorplan, thermal model, and core number settings at several
    locations (take the provided 100-core manycore system with
    floorplan ```10x10_manycore.flp``` as an example): 
    - In ```config/base.cfg```: 
-	 - Set ```periodic_thermal/floorplan``` to ```../benchmarks/10x10_manycore.flp```
-	 - Set ```periodic_thermal/thermal_model``` to ```../benchmarks/10x10_eigendata.bin```
-	 - Set ```general/total_cores``` to ```100```
+	 - Set ```periodic_thermal/floorplan``` to ```../benchmarks/10x10_manycore.flp```.
+	 - Set ```periodic_thermal/thermal_model``` to ```../benchmarks/10x10_eigendata.bin```.
+	 - Set ```general/total_cores``` to ```100```.
    - In ```simulationcontrol/config.py```: 
-	 - Set ```NUMBER_CORES``` to ```100```
+	 - Set ```NUMBER_CORES``` to ```100```.
+	 
 5. Run HotSniper by following the [HotSniper User Manual](https://github.com/anujpathania/HotSniper#the-hotsniper-user-manual).
 
 HotSniper with GDP can run directly with the provided two many-core
