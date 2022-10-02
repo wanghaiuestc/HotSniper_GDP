@@ -64,10 +64,20 @@ for the installation steps.
 	 - Set ```scheduler/open/dvfs``` to ```gdp``` to use GDP to
        compute the power budget dynamically for each DVFS cycle. 
 	 - Set ```scheduler/open/gdp_mode``` to ```steady``` or  ```transient```
-4. Run HotSniper by following the [HotSniper User Manual](https://github.com/anujpathania/HotSniper#the-hotsniper-user-manual).
+4. If you want to change the multi-core system to be simulated, set
+   the floorplan, thermal model, and core number settings at several
+   locations (take the provided 100-core manycore system with
+   floorplan ```10x10_manycore.flp``` as an example): 
+   - In ```config/base.cfg```: 
+	 - Set ```periodic_thermal/floorplan``` to ```../benchmarks/10x10_manycore.flp```
+	 - Set ```periodic_thermal/thermal_model``` to ```../benchmarks/10x10_eigendata.bin```
+	 - Set ```general/total_cores``` to ```100```
+   - In ```simulationcontrol/config.py```: 
+	 - Set ```NUMBER_CORES``` to ```100```
+5. Run HotSniper by following the [HotSniper User Manual](https://github.com/anujpathania/HotSniper#the-hotsniper-user-manual).
 
-HotSniper with GDP can be run directly with the provided two many-core
-systems: 
+HotSniper with GDP can run directly with the provided two many-core
+systems, using the PARSEC benchmarks: 
 
 1. 8x8\_manycore: floorplan (```benchmarks/8x8_manycore.flp```)
 2. 10x10\_manycore: floorplan (```benchmarks/10x10_manycore.flp```)
