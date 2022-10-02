@@ -1334,7 +1334,7 @@ void SchedulerOpen::periodic(SubsecondTime time) {
 		      }
 		    // write current threadMapping into file
 		    ofstream mapping_file("./system_sim_state/mapping.txt");
-		    for (int i=0; i<threadMapping.size(); i++)
+		    for (unsigned int i=0; i<threadMapping.size(); i++)
 		      mapping_file<<threadMapping.at(i)<<"\t";
 		    mapping_file.close();
 		  }

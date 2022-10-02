@@ -10,7 +10,7 @@ be easily integrated into a performance-thermal simulator or one's own
 simulation tool chain. 
 
 To illustrate how to integrate GDP into a performance-thermal simulator,
-we provide the HotSniper simulator integrated with GDP, which is ready
+we provide the HotSniper 7 simulator integrated with GDP, which is ready
 to run as an example. 
 
 The main GDP code is in ```gdp.py```.
@@ -45,16 +45,19 @@ are such scripts written for the HotSniper simulator.
 
 ## How to install the HotSniper integrated with GDP
 
-In this repository, GDP is integrated into the HotSniper simulator as an example. The installation of
+In this repository, GDP is integrated into the HotSniper 7 simulator as an example. The installation of
 HotSniper with GDP is exactly the same as the original HotSniper, so
 please refer to [HotSniper](https://github.com/anujpathania/HotSniper)
+(or see the local ```README_HOTSNIPER.md```)
 for the installation steps.
 
 
 ## How to run HotSniper with GDP
 
 1. Install HotSniper with GDP by following the installation steps of
-   the original HotSniper described in the [HotSniper User Manual](https://github.com/anujpathania/HotSniper#the-hotsniper-user-manual).
+   the original HotSniper described in the [HotSniper User
+   Manual](https://github.com/anujpathania/HotSniper#the-hotsniper-user-manual)
+   (or see the local ```README_HOTSNIPER.md```).
 2. Set the HotSniper related configurations by following the
    [HotSniper Configuration Checklist](https://github.com/anujpathania/HotSniper#configuration-checklist).
 3. Set the GDP related configurations:

@@ -24,15 +24,15 @@ std::vector<int> MapGDP::map(String taskName, int taskCoreRequirement, const std
 
 	// write availableCores and activeCores in info_for_mapping.txt as inputs to gdp_mapping.py
 	ofstream mapping_info_file("./system_sim_state/info_for_mapping.txt");
-	for (int i=0; i<availableCores.size();i++){
+	for (unsigned int i=0; i<availableCores.size();i++){
 	  mapping_info_file << availableCores[i] << "\t";
 	}
 	mapping_info_file << endl;
-	for (int i=0; i<activeCores.size();i++){
+	for (unsigned int i=0; i<activeCores.size();i++){
 	  mapping_info_file << activeCores[i] << "\t";
 	}
 	mapping_info_file << endl;
-	for (int i=0; i<preferredCoresOrder.size();i++){
+	for (unsigned int i=0; i<preferredCoresOrder.size();i++){
 	    mapping_info_file << preferredCoresOrder[i] << "\t";
 	}
 	mapping_info_file << endl;
@@ -45,7 +45,7 @@ std::vector<int> MapGDP::map(String taskName, int taskCoreRequirement, const std
 	// load the gdp mapping from file, and activate the cores according to the gdp mapping
 	int core_to_activate;
 	ifstream file_gdp_map("./system_sim_state/gdp_map.txt");
-	for (unsigned int coreCounter = 0; coreCounter < taskCoreRequirement; coreCounter++)
+	for (int coreCounter = 0; coreCounter < taskCoreRequirement; coreCounter++)
 	  {
 	    file_gdp_map >> core_to_activate;
 	    cores.push_back(core_to_activate);
