@@ -1,4 +1,4 @@
-The files execute_gdp_mapping.py, execute_gdp_power.py, and gdp.py are part of GDP.
+The files execute_gdp_mapping.py, execute_gdp_power.py, gdp.py, and A_mat_gen.m are part of GDP.
 Copyright (C) 2022 Hai Wang and Qinhui Yang.
 
 GDP is free software: you can redistribute it and/or modify
