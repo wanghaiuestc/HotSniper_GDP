@@ -229,7 +229,7 @@ def example():
                       ):
         min_parallelism = get_feasible_parallelisms(benchmark)[0]
         max_parallelism = get_feasible_parallelisms(benchmark)[-1]
-        for freq in (1, 4):
+        for freq in (4, 1):
             for parallelism in (max_parallelism,):
                 # you can also use try_run instead
                 run(['{:.1f}GHz'.format(freq), 'gdp', 'slowDVFS'], get_instance(benchmark, parallelism, input_set='simsmall'))
