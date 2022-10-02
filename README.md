@@ -58,7 +58,7 @@ When creating the Docker container, users in China may want to modify the last t
 
 ## How to run the HotSniper with GDP
 
-For a fresh installment, you can directly run HotSniper with GDP using
+For a fresh install, you can directly run HotSniper with GDP using
 the default settings as (run the following inside container):
 ```sh
 cd simulationcontrol
