@@ -53,6 +53,8 @@ please refer to [HotSniper](https://github.com/anujpathania/HotSniper)
 (or see the local ```README_HOTSNIPER.md```)
 for the installation steps.
 
+When creating the Docker container, users in China may want to modify the last two lines of ```docker/Dockerfile-ubuntu-16.04``` for better network connection. 
+
 
 ## How to run the HotSniper with GDP
 
