@@ -58,16 +58,20 @@ When creating the Docker container, users in China may want to modify the last t
 
 ## How to run the HotSniper with GDP
 
-1. Install HotSniper with GDP by following the installation steps of
-   the original HotSniper described in the [HotSniper User
-   Manual](https://github.com/anujpathania/HotSniper#the-hotsniper-user-manual)
-   (or see the local ```README_HOTSNIPER.md```).
-   
-2. Set the HotSniper related configurations by following the
+For a fresh installment, you can directly run HotSniper with GDP using
+the default settings as (run the following inside container):
+```sh
+cd simulationcontrol
+PYTHONIOENCODING="UTF-8" python3 run.py
+```
+
+To run with modified settings, use the following steps: 
+
+1. Set the HotSniper related configurations by following the
    [HotSniper Configuration
    Checklist](https://github.com/anujpathania/HotSniper#configuration-checklist).
    
-3. Set the GDP related configurations:
+2. Set the GDP related configurations:
    - In ```config/base.cfg```:
 	 - Set ```scheduler/open/logic``` to ```gdp``` to use GDP as
        the active core mapping method.
@@ -81,7 +85,7 @@ When creating the Docker container, users in China may want to modify the last t
    core mapping method, and use GDP only for the power budget
    computing.
    
-4. If you want to change the multi-core system to be simulated, set
+3. If you want to change the multi-core system to be simulated, set
    the floorplan, thermal model, and core number settings at several
    locations (take the provided 100-core manycore system with
    floorplan ```10x10_manycore.flp``` as an example): 
@@ -92,7 +96,7 @@ When creating the Docker container, users in China may want to modify the last t
    - In ```simulationcontrol/config.py```: 
 	 - Set ```NUMBER_CORES``` to ```100```.
 	 
-5. Run HotSniper by following the [HotSniper User Manual](https://github.com/anujpathania/HotSniper#the-hotsniper-user-manual).
+4. Run HotSniper by following the [HotSniper User Manual](https://github.com/anujpathania/HotSniper#the-hotsniper-user-manual).
 
 HotSniper with GDP can run directly with the provided two many-core
 systems, using the PARSEC benchmarks: 
