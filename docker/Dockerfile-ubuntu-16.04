@@ -71,4 +71,6 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
  && rm -rf /var/lib/apt/lists/*
 RUN pip3 install --upgrade pip==20.*  # pip 21 is not compatible with Ubuntu 16.04 Python version
-RUN pip3 install matplotlib seaborn diskcache tabulate -i https://pypi.tuna.tsinghua.edu.cn/simple
+# In China, you may use the second line (comment the first and uncomment the second) instead for better network connection
+RUN pip3 install matplotlib seaborn diskcache tabulate
+#RUN pip3 install matplotlib seaborn diskcache tabulate -i https://pypi.tuna.tsinghua.edu.cn/simple
