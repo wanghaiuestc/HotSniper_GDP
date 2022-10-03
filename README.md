@@ -1,5 +1,11 @@
 This is an implementation of integrating the greedy dynamic power
-(GDP) into the HotSniper simulator. The unintegrated GDP code is also available at [here](https://wanghaiuestc.github.io),
+(GDP) into the HotSniper simulator. By running this program, one can
+analyze the performance/power/thermal behavior of a multi/many-core
+system running multi-threaded benchmarks like the PARSEC benchmark,
+with optimized active core distributions and power budgets provided by
+GDP dynamically at runtime.
+
+The unintegrated GDP code is also available [here](https://wanghaiuestc.github.io),
 which can be used in other simulators or in your own performance-thermal simulation flow. 
 
 # Greedy Dynamic Power (GDP)
@@ -14,8 +20,7 @@ be easily integrated into a performance-thermal simulator or one's own
 simulation tool chain. 
 
 To illustrate how to integrate GDP into a performance-thermal simulator,
-we provide this HotSniper 7 simulator integrated with GDP, which is ready
-to run as an example. 
+we provide this HotSniper 7 simulator integrated with GDP, which is ready-to-run. 
 
 ## Publication
 
@@ -39,7 +44,7 @@ It mainly contains two functions: ```gdp_map```, which finds the GDP
 optimized active core map, and ```gdp_power```, which computes the GDP
 power budget for a given active core map.
 
-To integrate GDP in your own performance-thermal simulation tool
+To integrate GDP with your own performance-thermal simulation tool
 chain (other than HotSniper), simply write a connection python script to handle the input and
 output for GDP and add ```import gdp``` to use the GDP functions. 
 Take ```common/scheduler/policies/execute_gdp_mapping.py``` and ```common/scheduler/policies/execute_gdp_power.py``` as examples, which
@@ -96,7 +101,11 @@ To run with modified settings, use the following steps:
    - In ```simulationcontrol/config.py```: 
 	 - Set ```NUMBER_CORES``` to ```100```.
 	 
-4. Run HotSniper by following the [HotSniper User Manual](https://github.com/anujpathania/HotSniper#the-hotsniper-user-manual).
+4. Run HotSniper (run the following inside container):
+```sh
+cd simulationcontrol
+PYTHONIOENCODING="UTF-8" python3 run.py
+```
 
 HotSniper with GDP can run directly with the provided two many-core
 systems, using the PARSEC benchmarks: 
