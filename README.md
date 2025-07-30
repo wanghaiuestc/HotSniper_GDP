@@ -6,7 +6,9 @@ with optimized active core distributions and power budgets provided by
 GDP dynamically at runtime.
 
 The unintegrated GDP code is also available [here](https://wanghaiuestc.github.io),
-which can be used in other simulators or in your own performance-thermal simulation flow. 
+which can be used in other simulators or in your own performance-thermal simulation flow.
+
+See [here](https://wanghaiuestc.github.io) for more opensource softwares from my group. 
 
 # Greedy Dynamic Power (GDP)
 
