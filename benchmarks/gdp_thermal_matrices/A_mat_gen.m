@@ -25,7 +25,8 @@
 % and dvfs_epoch = 1000000 means power budget is updated every 1ms.
 
 % G, C, B matrices need to extracted from HotSpot or some thermal
-% modeling tool (not shiped with GDP) with a floorplan first.
+% modeling tool with a floorplan first. You can use the tool
+% "HotSpot with Thermal Model Extraction" provided at https://wanghaiuestc.github.io
 
 name_of_chip = '8x8_manycore';
 % set the power budgeting time step, works for transient GDP (A_bar)
