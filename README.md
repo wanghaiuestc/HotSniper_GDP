@@ -22,7 +22,9 @@ be easily integrated into a performance-thermal simulator or one's own
 simulation tool chain. 
 
 To illustrate how to integrate GDP into a performance-thermal simulator,
-we provide this HotSniper 7 simulator integrated with GDP, which is ready-to-run. 
+we provide this HotSniper 7 simulator integrated with GDP, which is ready-to-run.
+
+To generate GDP thermal matrices of your own chip, please use [HotSpot with Thermal Model Extraction](https://wanghaiuestc.github.io). 
 
 ## Publication
 
@@ -114,6 +116,8 @@ systems, using the PARSEC benchmarks:
 
 1. 8x8\_manycore: floorplan (```benchmarks/8x8_manycore.flp```)
 2. 10x10\_manycore: floorplan (```benchmarks/10x10_manycore.flp```)
+
+Other than these, to generate GDP thermal matrices of your own chip, please use [HotSpot with Thermal Model Extraction](https://wanghaiuestc.github.io).
 
 ## Code Acknowledgements
 
