@@ -204,7 +204,7 @@ def get_workload(benchmark, cores, parallelism=None, number_tasks=None, input_se
 
 
 def example():
-    for benchmark in (
+    for benchmarks in (
                       'parsec-blackscholes',
                       #'parsec-bodytrack',
                       #'parsec-canneal',
@@ -213,6 +213,7 @@ def example():
                       #'parsec-streamcluster',
                       #'parsec-swaptions',
                       #'parsec-x264',
+                      #'parsec-fluidanimate,parsec-streamcluster', # multi-program simulation
                       #'splash2-barnes',
                       #'splash2-fmm',
                       #'splash2-ocean.cont',
@@ -227,12 +228,21 @@ def example():
                       #'splash2-lu.ncont',
                       #'splash2-radix'
                       ):
-        min_parallelism = get_feasible_parallelisms(benchmark)[0]
-        max_parallelism = get_feasible_parallelisms(benchmark)[-1]
-        for freq in (4, 1):
-            for parallelism in (max_parallelism,):
+        benchmarks = benchmarks.split(",")
+        min_parallelisms = []
+        max_parallelisms = []
+        for idx, benchmark in enumerate(benchmarks):
+            min_parallelisms.append(get_feasible_parallelisms(benchmark)[0])
+            max_parallelisms.append(get_feasible_parallelisms(benchmark)[-1])
+        for freq in (4,):
+            for parallelisms in (max_parallelisms,):
+                for idx, benchmark in enumerate(benchmarks):
+                    if idx == 0:
+                        benchmark_instance = get_instance(benchmark, parallelisms[idx], input_set='simsmall')
+                    else:
+                        benchmark_instance = benchmark_instance + "," + get_instance(benchmark, parallelisms[idx], input_set='simsmall')
                 # you can also use try_run instead
-                run(['{:.1f}GHz'.format(freq), 'gdp', 'slowDVFS'], get_instance(benchmark, parallelism, input_set='simsmall'))
+                run(['{:.1f}GHz'.format(freq), 'gdp', 'slowDVFS'], benchmark_instance)
 
 
 def test_static_power():
