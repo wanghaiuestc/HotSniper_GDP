@@ -1,6 +1,7 @@
 #include "scheduler.h"
 #include "scheduler_static.h"
 #include "scheduler_pinned.h"
+#include "scheduler_manual.h"
 #include "scheduler_roaming.h"
 #include "scheduler_big_small.h"
 #include "scheduler_sequential.h"
@@ -19,6 +20,8 @@ Scheduler* Scheduler::create(ThreadManager *thread_manager)
       return new SchedulerStatic(thread_manager);
    else if (type == "pinned")
       return new SchedulerPinned(thread_manager);
+   else if (type == "manual")
+      return new SchedulerManual(thread_manager);
    else if (type == "roaming")
       return new SchedulerRoaming(thread_manager);
    else if (type == "big_small")
