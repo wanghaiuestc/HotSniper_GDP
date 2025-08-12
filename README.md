@@ -136,8 +136,8 @@ To enable and configure the manual scheduler, in ```config/base.cfg```:
 1. Change ```scheduler/type``` to ```manual```. Note by doing this, you lost the GDP features (and all schedulers implemented under the "open scheduler" like TSP, first unused, etc.) since GDP is effective when ```scheduler/type``` set as ```open```.
 
 2. Under ```scheduler/manual```
-  - Set ```quantum``` for your desired round-robin time slice length.
-  - Set ```order``` for your desired core order to be scheduled on, end with -1, like 5,2,4,3,2,6,2,5,-1
+   - Set ```quantum``` for your desired round-robin time slice length.
+   - Set ```order``` for your desired core order to be scheduled on, end with -1, like 5,2,4,3,2,6,2,5,-1
   
 For example, if we run a 16-threaded application with core order set as "5,2,4,3,2,6,2,5,-1", the 16 threads will be assigned to cores as 5,2,4,3,2,6,2,5,5,2,4,3,2,6,2,5. Core 5 will have 4 threads running in round-robin with time slice length set in ```quantum```.
 
