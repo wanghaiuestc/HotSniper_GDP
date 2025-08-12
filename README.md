@@ -87,7 +87,7 @@ To run with modified settings, use the following steps:
 	 - Set ```scheduler/open/dvfs``` to ```gdp``` to use GDP to
        compute the power budget dynamically for each DVFS cycle. 
 	 - Set ```scheduler/open/gdp_mode``` to ```steady``` or ```transient```.
-	 
+
 	 Although we recommend setting both the active core mapping
    method and the power budget computing method as GDP, one can
    actually set them independently. For example, one is free to use ```first_unused``` as the active
@@ -118,6 +118,29 @@ systems, using the PARSEC benchmarks:
 2. 10x10\_manycore: floorplan (```benchmarks/10x10_manycore.flp```)
 
 Other than these, to generate GDP thermal matrices of your own chip, please use [HotSpot with Thermal Model Extraction](https://wanghaiuestc.github.io).
+
+## Additional Features
+
+In addition to the integration of GDP, this version of HotSniper has the following additional new features.
+
+### Manual Scheduler
+
+We provide a new scheduler called manual. It schedules threads to and ONLY to the cores in the order provided by the user, with the following features:
+
+1. User can provide repeated cores in the order list, like 5, 3, 4, 3, 5.
+2. The order list element number is not restricted by the thread number. For example, for a 16-threaded application, it is okey to provided a core order list of 3 elements.
+3. Multiple threads on the same core will run in round-robin (RR), with time slices set by the user.
+
+To enable and configure the manual scheduler, in ```config/base.cfg```:
+
+1. Change ```scheduler/type``` to ```manual```. Note by doing this, you lost the GDP features (and all schedulers implemented under the "open scheduler" like TSP, first unused, etc.) since GDP is effective when ```scheduler/type``` set as ```open```.
+
+2. Under ```scheduler/manual```
+  - Set ```quantum``` for your desired round-robin time slice length.
+  - Set ```order``` for your desired core order to be scheduled on, end with -1, like 5,2,4,3,2,6,2,5,-1
+  
+For example, if we run a 16-threaded application with core order set as "5,2,4,3,2,6,2,5,-1", the 16 threads will be assigned to cores as 5,2,4,3,2,6,2,5,5,2,4,3,2,6,2,5. Core 5 will have 4 threads running in round-robin with time slice length set in ```quantum```.
+
 
 ## Code Acknowledgements
 
