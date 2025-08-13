@@ -1,4 +1,5 @@
 #include "scheduler_manual.h"
+#include "thread.h"
 #include "config.hpp"
 
 SchedulerManual::SchedulerManual(ThreadManager *thread_manager)
@@ -31,7 +32,8 @@ void SchedulerManual::threadSetInitialAffinity(thread_id_t thread_id)
 {
   // assign the thread to core
   m_thread_info[thread_id].setAffinitySingle(m_next_core);
-  std::cout<<"[scheduler] [Manual]: "<<"Assigned thread "<<thread_id<<" to core "<<m_next_core<<std::endl;
+  app_id_t app_id =  Sim()->getThreadManager()->getThreadFromID(thread_id)->getAppId();
+  std::cout<<"[scheduler] [Manual]: "<<"Assigned "<<"app "<<app_id<<" thread "<<thread_id<<" to core "<<m_next_core<<std::endl;
   
   // find the next core in core order specified by the user,
   // core order will loop back (using mod operation) if there are more threads
